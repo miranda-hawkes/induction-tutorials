@@ -121,7 +121,7 @@ In your project:
 
 2. Find the `scala` version and change it to **2.11.11**
 
-3. Find the `scalatestplus-play` version and change it to **3.1.3**
+3. Find the `scalatestplus-play` version and change it to **3.1.2**
 
 4. Find the `sbt` version and change it to **0.13.18**
 

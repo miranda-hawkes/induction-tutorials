@@ -11,6 +11,7 @@ This tutorial walks you through the creation of an API that can store, retrieve 
 * git and GitHub
 * SBT
 * Model-View-Controller pattern
+* Mockito
 
 ## Previous Knowledge
 Its recommended you have *some* experience with the following, although it isn't completely required:

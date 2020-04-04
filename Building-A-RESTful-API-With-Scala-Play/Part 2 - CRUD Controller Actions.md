@@ -111,7 +111,7 @@ Run the tests! Do they all pass?
 
 2. Run the tests and watch them fail
 
-3. See if you can change the `ApplicationController.index()` to return a 200 OK response and fulfill the test. Hint: look in `play.api.mvc.Results`
+3. See if you can change the `ApplicationController.index()` to return a 200 OK response and fulfill the test. Hint: look in `play.api.mvc.Results`. Be sure to update the test description.
 
 4. Run the tests again and check they pass
 
@@ -276,7 +276,8 @@ def create(): Action[JsValue] = Action.async(parse.json) { implicit request =>
 - The result of `dataRepository.create()` is a `Future[Result]`, so even though we're not doing any lookup here, the type must be the same    
 
 **What does `_` mean in the `case` statements?**
-- This is a character used when you don't care what the value of that field is. In the `JsError(_)`, if we wanted to we could pull out the reason(s) the validation failed and log them somewhere.
+- This is a character used when you don't care what the value of that field is. For `JsError(_)`, if we wanted to we could pull out the reason(s) the validation failed and log them somewhere.
+- Have a look in the documentation for the `JsSuccess` and `JsError` case classes to see what other properties they have. Hint: start [here](https://www.playframework.com/documentation/2.6.x/api/scala/play/api/libs/json/index.html)
 
 ### The Update Action
 See if you can apply what you've seen so far to the `update()` function and complete the code.
