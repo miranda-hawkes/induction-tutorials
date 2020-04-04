@@ -4,6 +4,7 @@ In this section we'll give our API the ability to create, read, update and delet
 ## Create A New Controller
 1. Create a new Scala file in the controllers package called ApplicationController
     * Right click the controllers package → New → Scala Class
+
 2. Extend the `ApplicationController` with `BaseController`. This will give us access to a number of functions for our actions
     * You'll notice there is now an error stating that ControllerComponents must be implemented - this is a dependency of the BaseController trait. This class contains values necessary in most frontend controllers, such as multi-language support. To remedy this, change the class signature to the following:
     ```
@@ -11,33 +12,44 @@ In this section we'll give our API the ability to create, read, update and delet
     ```
     * We won't go much into dependency injection (DI) as part of this, but using DI you inject the objects needed by a class typically through a constructor
     * Import `javax.inject.Inject` and `play.api.mvc.ControllerComponents` when prompted
+
 3. Write a Scala method in the controller called index() that simply returns TODO
     ```
     def index() = TODO
     ```
     * TODO is a Play feature that is essentially a default page for controller actions that haven't been completed. It is a useful way of keeping your app functioning while building functionality incrementally.
+
 4. Before we can see the TODO page, we need to add an app route that references the new controller and method. In the routes file, add the following:
     ```
     GET     /api/index     controllers.ApplicationController.index
     ```
+    
 5. Run your application and hit the new route. You should see the TODO text.
 6. Create 4 more Scala methods and matching routes, stubbed with TODO, with the following requirements:
-    * A method called 'create' with no parameters. The http method should be POST
-    * A method called 'read' with a parameter called id of type String. The http method should be GET
-    * A method called 'update' with a parameter called id of type String. The http method should be PUT
-    * A method called 'delete' with a parameter called id of type String. The http method should be DELETE
+
+    | Method Name | Parameters | HTTP Method |
+    |-------------|------------|-------------|
+    | create      | None       | POST        |
+    | read        | id: String | GET         |
+    | update      | id: String | PUT         |
+    | delete      | id: String | DELETE      |
+
     Hint: to reference a parameter in the routes file, the route should be formatted like this, so it can pass a String parameter in the URL to the controller method:
     ```
     GET     /route/:id     controllers.ControllerName.methodName(id: String)
     ```
+
 7. Try accessing the 'read' route in the browser with a dummy id as a URL parameter
 
 ## Test the New Controller
 For almost every file in the `app/` directory of our project, there should be a corresponding test file. We call these files the exact same name as the file they are testing with the suffix 'Spec', and put them in a matching folder to where they sit in the `app/` package in the `test/` package.
+
 1. Create a new Scala file to hold tests for your new controller. Where should it sit and what should it be called?
+
 2. Extend the new file with:
     * `UnitSpec` (import `uk.gov.hmrc.play.test.UnitSpec`) - this contains many test helpers for writing BDD, doing assertions etc
     * `GuiceOneAppPerSuite` (import `org.scalatestplus.play.guice.GuiceOneAppPerSuite`) - provides an instance of Application in order to test various components in your app)
+
 3. At the top of the spec, within the curly brackets, add the following lines:
     ```
     val controllerComponents: ControllerComponents = app.injector.instanceOf[ControllerComponents]
@@ -61,6 +73,7 @@ For each controller action, we want a separate suite of tests. One way to struct
 }
 ```
 1. Add this underneath the code you copied in step 3
+
 2. Add placeholders for the rest of the controller methods using the same structure
 
 ### Checking the response HTTP status
@@ -85,6 +98,7 @@ Breaking down the above:
 * Line 3
     * Creates a new value `result` and assigns it the outcome of calling the function `index()` on the controller
     * The `FakeRequest()` is needed to mimic an incoming HTTP request, the same as hitting the route in the browser.
+
 * Line 6
     * Uses a helper method called `status()` to pull out the HTTP response status of calling the function
     * `shouldBe` is just one of the many ways of doing assertions in unit tests
@@ -94,9 +108,13 @@ Breaking down the above:
 Run the tests! Do they all pass?
 
 1. Change `Status.NOT_IMPLEMENTED` to `Status.OK`
+
 2. Run the tests and watch them fail
+
 3. See if you can change the `ApplicationController.index()` to return a 200 OK response and fulfill the test. Hint: look in `play.api.mvc.Results`
+
 4. Run the tests again and check they pass
+
 5. Congrats, you've just done **test-driven development**
 
 ## Data Access
@@ -115,8 +133,11 @@ To create a new instance of that model, you can do either of the following:
 val bookOne = Book("Book name", "Author name", 10)
 val bookTwo = Book(name = "Book name", author = "Author name", numSales = 10)
 ```
+
 1. Create a new folder in your project called `models` inside the `app` directory
+
 2. In that directory, create a new Scala file named `DataModel.scala`
+
 3. Create a model called DataModel using the example, with the following required fields:
 
     | Name        | Data Type |
@@ -138,6 +159,7 @@ This allows for easily transforming the model to and from JSON.
 Next we will define the contract for our data access layer. Traits are similar to Interfaces in Java – more info [here](http://docs.scala-lang.org/tutorials/tour/traits.html).
 
 1. Create a new folder called `repositories` inside the `app` directory. 
+
 2. In that directory, create a new Scala file named `DataRepository.scala` with the following content:
 ```
 import javax.inject.{Inject, Singleton}
@@ -215,5 +237,6 @@ At this point, we can return to the controller to round out the implementation d
 We will inject the DataRepository into our Controller, then use that to create our repository.
 
 1. Update the signature of `ApplicationController` so that `DataRepository` is injected as a dependency, as per previous examples
+
 2. Also inject `implicit val ec: ExecutionContext` as a dependency. ExecutionContext is needed in asynchronous code as it lets Scala decide where in the thread pool to execute the related function
 

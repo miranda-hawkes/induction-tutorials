@@ -10,11 +10,14 @@ This tutorial walks you through the creation of an API that can store, retrieve 
 * Test-driven development
 * git and GitHub
 * SBT
+* Model-View-Controller pattern
 
 ## Previous Knowledge
 Its recommended you have *some* experience with the following, although it isn't completely required:
 * Scala (tutorial [here](https://www.scala-exercises.org/scala_tutorial)), Java or similar
 * HTTP request methods and response statuses (brief guide [here](https://code.tutsplus.com/tutorials/http-the-protocol-every-web-developer-must-know-part-1--net-31177))
+
+Some of the sections are purposefully vague and get more challenging as you progress. This is intended - your colleagues, Slack, Confluence, GitHub are all valuable resources!
 
 ## Why Scala & Play?
 Reactive Programming is based around building applications that can meet the diverse demands of modern environments. Four main characteristics:

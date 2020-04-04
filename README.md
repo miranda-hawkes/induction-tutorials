@@ -1,4 +1,4 @@
 # Induction Tutorials
-A series of tutorials useful for being a new specialist Developer or QA.
+A series of tutorials useful for new specialist Developers or QAs.
 
 ## [Building a restful API with Scala, Play Framework & Mongo](Building-A-RESTful-API-With-Scala-Play/README.md)
