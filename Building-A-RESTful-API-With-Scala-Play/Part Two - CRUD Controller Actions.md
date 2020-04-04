@@ -42,7 +42,7 @@ In this section we'll give our API the ability to create, read, update and delet
 7. Try accessing the 'read' route in the browser with a dummy id as a URL parameter
 
 ## Test the New Controller
-For almost every file in the `app/` directory of our project, there should be a corresponding test file. We call these files the exact same name as the file they are testing with the suffix 'Spec', and put them in a matching folder to where they sit in the `app/` package in the `test/` package.
+For almost every file in the `app/` directory of our project, there should be a corresponding test file. We call these files the exact same name as the file they are testing with the suffix `Spec`, and put them in a matching folder to where they sit in the `app/` package in the `test/` package.
 
 1. Create a new Scala file to hold tests for your new controller. Where should it sit and what should it be called?
 
@@ -74,7 +74,7 @@ For each controller action, we want a separate suite of tests. One way to struct
 ```
 1. Add this underneath the code you copied in step 3
 
-2. Add placeholders for the rest of the controller methods using the same structure
+2. Add placeholders for the remaining three controller methods using the same structure
 
 ### Checking the response HTTP status
 To run tests against specific methods in the controller, we will use the `TestApplicationController` and simply call the methods directly.
@@ -200,7 +200,7 @@ class DataRepository @Inject()(mongo: ReactiveMongoComponent,
 ```
 This section creates a new DataRepository class and injects dependencies into it required for every Mongo Repository. `extends ReactiveRepository[DataModel, BSONObjectID]` tells the library what the structure of our data looks like by using our newly created `DataModel`.
 This means that every document inserted into the database has the same structure, with `id`, `name`, `description` and `numSales` properties.
-For this database structure, each document will be uniquely identified by the `id`.
+For this database structure, each document will be identified by the `id`.
 
 ```
 "data",
@@ -230,7 +230,7 @@ Each of these methods correspond to a CRUD function.
 * `update()` takes in a DataModel, finds a matching document with the same `id` and updates the document. It then returns the updated DataModel
 * `delete()` deletes a document in the database that matches the `id` passed in
 
-All of the return types of these functions are asynchronous futures.
+All of the return types of these functions are [asynchronous futures](https://www.playframework.com/documentation/2.6.x/ScalaAsync).
 
 ## The Controller
 At this point, we can return to the controller to round out the implementation details there. Before we can start adding implementation details, we need to configure some dependency injections.
@@ -240,3 +240,47 @@ We will inject the DataRepository into our Controller, then use that to create o
 
 2. Also inject `implicit val ec: ExecutionContext` as a dependency. ExecutionContext is needed in asynchronous code as it lets Scala decide where in the thread pool to execute the related function
 
+### The Index Action
+There is an unimplemented `index()` method. This is meant to display a list of all DataModels in the database, selected without parameters. The implementation for this is very simple.
+
+Update `index()` to the following:
+```
+def index(): Action[AnyContent] = Action.async { implicit request =>
+    dataRepository.find().map(items => Ok(Json.toJson(items)))
+}
+```
+`.find()` is a built-in method in the library we're using, and will return all items in the `data` repository.
+The result returned by this method is a `Future` - essentially a placeholder for the result of performing the lookup operation in the database. We use `map(items => Ok(Json.toJson(items))` to write what we want to do with the result.
+In this case, we take the resulting object (of type `List[DataModel]`), transform it into JSON, and return it in the body of an `Ok` / 200 response
+
+### Read and Delete Actions
+See if you can complete two more methods, using the appropriate methods created in `DataRepository` with the following prompts:
+* `read()` should return a HTTP OK response, with a body containing the item(s) it found
+* `delete()` should return a HTTP ACCEPTED response, with no body
+
+### The Create Action
+The remaining `create()` and `update()` methods introduce a small amount of complexity in that they require the request body to be parsed using Scala’s built in pattern matching functionality. 
+
+For the `create()` method, we’ll apply a JSON [Body Parser](https://www.playframework.com/documentation/2.6.x/ScalaBodyParsers) to a request. Then, we'll use a `validate()` method in the Play JSON library to check that the request body contains all of the fields with the correct types needed to create a `DataModel`.
+We use a `match` statement with `JsSuccess` and `JsError` to deal with the two possible outcomes: a valid or invalid request.
+```
+def create(): Action[JsValue] = Action.async(parse.json) { implicit request =>
+    request.body.validate[DataModel] match {
+        case JsSuccess(dataModel, _) =>
+            dataRepository.create(dataModel).map(_ => Created)
+        case JsError(_) => Future(BadRequest)
+    }
+}
+```
+**Why is `BadRequest` wrapped in a `Future`?**
+- The result of `dataRepository.create()` is a `Future[Result]`, so even though we're not doing any lookup here, the type must be the same    
+
+**What does `_` mean in the `case` statements?**
+- This is a character used when you don't care what the value of that field is. In the `JsError(_)`, if we wanted to we could pull out the reason(s) the validation failed and log them somewhere.
+
+### The Update Action
+See if you can apply what you've seen so far to the `update()` function and complete the code.
+* It should take in an `id` URL parameter, similar to `read()` and `delete()`
+* It should also take in a JSON body
+* You need to validate the body in the same way as in the `create()` method
+* If successful, it should return HTTP ACCEPTED, with the **new** updated DataModel (in the form of JSON) in the body of the response
