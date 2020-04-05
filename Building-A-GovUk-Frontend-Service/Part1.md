@@ -3,7 +3,7 @@
 ## Pre-requisites
 These should all be installed as part of your laptop setup.
 * Scala
-* Mongo
+* Service Manager
 * git
 * IntelliJ IDEA
 * SBT
@@ -16,7 +16,7 @@ From the [Lightbend Developer Hub](https://developer.lightbend.com/start/):
 
 2. Select **Play Scala Seed**
 
-3. Give it a sensible name and hit **Create project for me**
+3. Give it a sensible name that ends in `-frontend` and hit **Create project for me**
 
 4. Extract the .zip file and move the folder to your workspace
 
@@ -41,7 +41,7 @@ Take a few minutes to get familiar with what has been created for you. In partic
 
 3. Navigate to `localhost:9000` in your browser and you should see a greeting message from Play
 
-4. Where is this text coming from? Use the files in the `controllers` & `views` packages to investigate. More in-depth frontend development will be covered in a separate tutorial.
+4. Where is this text coming from? Use the files in the `controllers` & `views` packages to investigate
 
 5. Try customising both the header and page title text in those files to your own message
 
@@ -77,7 +77,7 @@ We want to track changes to the project using git.
 7. Back to the command line:
     * We need to tell git where the remote GitHub repository is, so that we can push up changes. Run the following, substituting with your GitHub username and newly created project name
     * `git remote add origin git@github.com:<username>/<repo-name>.git`
-    * e.g. `git remote add origin git@github.com:miranda-hawkes/play-scala-seed.git`
+    * e.g. `git remote add origin git@github.com:miranda-hawkes/play-scala-seed-frontend.git`
 
 8. Run `git remote -v` to check the remote is correct
 
@@ -111,10 +111,9 @@ git checkout -b <branch-name>
 Keep the branch name short and sweet. If your branch on a real microservice relates to a JIRA ticket, use the ID of the ticket as the branch name.
 
 ## Installing Dependencies
-As mentioned earlier, we're going to use Reactive Mongo in our project to make basic requests to a database.
-We need to use a separate library for this, and we'll be using the HMRC version that is used widely across MDTP. We'll also add a useful testing library.
+As mentioned earlier, we're going to use some HMRC libraries to provide standard UI components. We will also use a HMRC bootstrap library and a useful testing library.
 
-We're going to first change the version of Play framework we're using so that it works with simple-reactivemongo. We'll also need to change a couple other dependency versions.
+We're going to first change some dependency versions so they all work together.
 
 In your project:
 
@@ -137,7 +136,9 @@ resolvers += "HMRC Releases" at "https://dl.bintray.com/hmrc/releases"
 
 2. Add the new library and version to the `build.sbt` file, similar to how scalatestplus-play is added:
 ```
-libraryDependencies += "uk.gov.hmrc" %% "simple-reactivemongo" % "7.26.0-play-26"
+libraryDependencies += "uk.gov.hmrc" %% "govuk-template" % "5.52.0-play-26"
+libraryDependencies += "uk.gov.hmrc" %% "bootstrap-play-26" % "1.6.0"
+libraryDependencies += "uk.gov.hmrc" %% "play-ui" % "8.8.0-play-26"
 libraryDependencies += "uk.gov.hmrc" %% "hmrctest" % "3.9.0-play-26" % Test
 ```
 
@@ -151,16 +152,33 @@ lazy val root = (project in file("."))
   ))
 ```
 
-4. Some extra configuration is needed for the reactive mongo library to know how to connect to your local Mongo database and to give it a name. Add the following to application.conf and adding in the name of your app:
+4. Add a route to the `routes` file - this is needed to pick up Gov Uk templates:
 ```
-mongodb {
-  uri = "mongodb://localhost:27017/replace-with-your-app-name-here"
+->     	/template                                template.Routes
+```
+
+5. Add the following to your `application.conf` file. This is needed to use the bootstrap library and other UI assets:
+```
+appName = "play-scala-seed-frontend"
+
+include "frontend.conf"
+
+play.filters.headers.contentSecurityPolicy= "default-src 'self' 'unsafe-inline' localhost:9000 localhost:9032 data:"
+
+play.modules.enabled += "uk.gov.hmrc.play.bootstrap.FrontendModule"
+play.modules.enabled += "uk.gov.hmrc.play.bootstrap.HttpClientModule"
+play.modules.enabled += "uk.gov.hmrc.play.bootstrap.AuditModule"
+
+assets {
+  version = "4.11.0"
+  version = ${?ASSETS_FRONTEND_VERSION}
+  url = "http://localhost:9032/assets/"
 }
 ```
-5. Run tests again and check everything is working okay
+4. Run tests again and check everything is working okay
 
-6. Add the changed files to git, do a git commit briefly detailing what you have changed, then push the branch up to GitHub (hint: `git push origin <branch-name>`)
+5. Add the changed files to git, do a git commit briefly detailing what you have changed, then push the branch up to GitHub (hint: `git push origin <branch-name>`)
 
-7. Navigate to GitHub and find your new branch and view the changes you have made
+6. Navigate to GitHub and find your new branch and view the changes you have made
 
 ## [Part 2](Part2.md) 
