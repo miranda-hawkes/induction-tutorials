@@ -4,18 +4,18 @@
 
 ## This Tutorial
 This tutorial walks you through the creation of an API that can store, retrieve and update data in a Mongo database. It covers these main concepts and technologies, some more in depth than others:
-* Functional programming with Scala
+* Scala
 * Creating a RESTful API with Play Framework
 * MongoDB access using a Reactive Mongo driver
 * Test-driven development
 * git and GitHub
 * SBT
-* Model-View-Controller pattern
 * Mockito
+* CURL
 
 ## Previous Knowledge
-Its recommended you have *some* experience with the following, although it isn't completely required:
-* Scala (tutorial [here](https://www.scala-exercises.org/scala_tutorial)), Java or similar
+Its recommended you have some experience with the following, although it isn't completely required:
+* Scala (tutorial [here](https://www.scala-exercises.org/scala_tutorial)), Java or similar, along with unit testing
 * HTTP request methods and response statuses (brief guide [here](https://code.tutsplus.com/tutorials/http-the-protocol-every-web-developer-must-know-part-1--net-31177))
 
 Some of the sections are purposefully vague and get more challenging as you progress. This is intended - your colleagues, Slack, Confluence, GitHub are all valuable resources!
@@ -45,5 +45,10 @@ For this tutorial, we'll be using [the HMRC simple-reactivemongo](https://github
 ## SBT
 [SBT](https://www.scala-sbt.org/0.13/docs/Getting-Started.html) (Simple Build Tool) supports the compilation of Scala code and integration with other frameworks we're using. It is similar to Maven which you may be familiar with. 
 
-## Unit & Integration Testing
-To wrap it all up, we’ll be using Scala Test to unit test our application. Scala Test allows us to write test cases in the style of behaviour-driven development and highlights the flexibility of Scala and how it an easily be used to create a domain-specific language.
+## Unit Testing
+To wrap it all up, we’ll be using Scala Test and Mockito to unit test our application. Scala Test allows us to write test cases in the style of behaviour-driven development and highlights the flexibility of Scala and how it an easily be used to create a domain-specific language.
+
+## Sections
+* [Part 1](Part1.md) 
+* [Part 2](Part2.md) 
+* [Part 3](Part3.md) 

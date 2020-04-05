@@ -76,6 +76,9 @@ For each controller action, we want a separate suite of tests. One way to struct
 
 2. Add placeholders for the remaining three controller methods using the same structure
 
+### Do a commit
+Now is probably a good time to make a commit. Run your (placeholder) tests first, then commit your changes and push to GitHub.
+
 ### Checking the response HTTP status
 To run tests against specific methods in the controller, we will use the `TestApplicationController` and simply call the methods directly.
 Add the following imports:
@@ -285,3 +288,5 @@ See if you can apply what you've seen so far to the `update()` function and comp
 * It should also take in a JSON body
 * You need to validate the body in the same way as in the `create()` method
 * If successful, it should return HTTP ACCEPTED, with the **new** updated DataModel (in the form of JSON) in the body of the response
+
+## [Part 3](Part3.md)

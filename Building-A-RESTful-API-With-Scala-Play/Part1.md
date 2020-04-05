@@ -6,6 +6,7 @@ These should all be installed as part of your laptop setup.
 * Mongo
 * git
 * IntelliJ IDEA
+* SBT
 
 ## Generating a Play/Scala application seed 
 We'll first generate a template for your Play application that gives you the initial setup you need.
@@ -40,7 +41,7 @@ Take a few minutes to get familiar with what has been created for you. In partic
 
 3. Navigate to `localhost:9000` in your browser and you should see a greeting message from Play
 
-4. Where is this text coming from? More on this later, but for now use the files in the `controllers` & `views` packages to investigate.
+4. Where is this text coming from? Use the files in the `controllers` & `views` packages to investigate. More in-depth frontend development will be covered in a separate tutorial.
 
 5. Try customising both the header and page title text in those files to your own message
 
@@ -150,21 +151,10 @@ lazy val root = (project in file("."))
   ))
 ```
 
-4. Some extra configuration is needed for the reactive mongo library to know how to connect to your local Mongo database. Add the following to application.conf and adding in the name of your app where highlighted:
+4. Some extra configuration is needed for the reactive mongo library to know how to connect to your local Mongo database and to give it a name. Add the following to application.conf and adding in the name of your app:
 ```
-appName = "replace-your-app-name-here"
-
 mongodb {
-  uri = "mongodb://localhost:27017/"${appName}
-  channels = 5
-  failoverStrategy = {
-    initialDelayMsecs = 100
-    retries = 10
-    delay = {
-      function = fibonacci
-      factor = 1
-    }
-  }
+  uri = "mongodb://localhost:27017/replace-with-your-app-name-here"
 }
 ```
 5. Run tests again and check everything is working okay
@@ -172,3 +162,5 @@ mongodb {
 6. Add the changed files to git, do a git commit briefly detailing what you have changed, then push the branch up to GitHub (hint: `git push origin <branch-name>`)
 
 7. Navigate to GitHub and find your new branch and view the changes you have made
+
+## [Part 2](Part2.md) 
