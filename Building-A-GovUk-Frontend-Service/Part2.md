@@ -52,16 +52,13 @@ Delete the following files:
           head: Head,
           headerNav: HeaderNav,
           mainContent: MainContent,
-          footerLinks: FooterLinks)
+          footerLinks: FooterLinks,
+          article: Article)
     
     @(title: String)(mainBodyContent: Html)(implicit messages: Messages)
     
     @headContent = {
       @head(linkElem = None, headScripts = None)
-    }
-    
-    @bodyEnd = {
-      @footer(analyticsToken = None, analyticsHost = "", ssoUrl = None, scriptElem = None, gaCalls = None)
     }
     
     @insideHeader = {
@@ -81,7 +78,7 @@ Delete the following files:
     }
     
     @govUkTemplate(title = Some(title), bodyClasses = None)(headContent,
-                                                            bodyEnd,
+                                                            HtmlFormat.empty,
                                                             insideHeader,
                                                             HtmlFormat.empty,
                                                             HtmlFormat.empty,
@@ -162,3 +159,5 @@ Now refresh the page in your browser. The text has changed to what you specified
 Obviously we're only catering for English still, but if you created a duplicate messages file called `messages.cy` and replaced the text with the Welsh equivalent, and a user hit the page with a certain browser cookie (`PLAY_LANG`) set to Welsh (`cy`), it would render the page in Welsh.
 On most MDTP services we implement an English/Welsh toggle button on pages so users can easily change their preference. 
 For this reason, we always use messages files for text on views - don't write the English version directly into views.
+
+## [Part 3](Part3.md) 
