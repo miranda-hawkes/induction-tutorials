@@ -151,30 +151,26 @@ Add a scenario to the `ApplicationController .create` test:
 
   "return an error" in {
 
-    intercept[GenericDriverException] {
-      val result = TestApplicationController.create()(FakeRequest().withBody(jsonBody))
+    val result = TestApplicationController.create()(FakeRequest().withBody(jsonBody))
 
-      status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-
-      await(bodyOf(result)) shouldBe Json.obj("message" -> "Error adding item to Mongo")
-    }
+    status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+    await(bodyOf(result)) shouldBe Json.obj("message" -> "Error adding item to Mongo").toString()
   }
 }
 ```
 
 Some key differences:
 * We stub a `Future.failed(GenericDriverException("Error"))` - a type of exception reactive mongo may throw if the query failed
-* As this Exception is thrown, we have to wrap the test in an `intercept` to tell the app we expect this Exception being thrown
 * We expect an INTERNAL_SERVER_ERROR
 * The JSON returned should have a suitable error message
 
 1. Run the tests - this scenario should fail.
 
-2. Update the controller method to catch any DatabaseException using a `recover` block.
+2. Update the controller method to catch any `GenericDriverException` using a `recover` block.
 
 ```
 dataRepository.create(dataModel).map(_ => Created) recover {
-  case _: DatabaseException => InternalServerError(Json.toJson(
+  case _: GenericDriverException => InternalServerError(Json.obj(
     "message" -> "Error adding item to Mongo"
   ))
 }
@@ -252,7 +248,7 @@ Date: Sun, 05 Apr 2020 12:22:56 GMT
 Content-Type: application/json
 Content-Length: 40
 
-["message","Error adding item to Mongo"]
+[{"message": "Error adding item to Mongo"}]
 ```
 
 This is because you've tried to add a document to mongo with the same `_id`.
@@ -281,7 +277,7 @@ There are a few ways you can view your newly created data in Mongo. One way is t
 
 4. Hit the `PUT /api/:id` route with a CURL command. To specify the PUT HTTP method, use `-X PUT` in your CURL command
 
-5. Hit the `DELETE /api/:id` route with a CURL command to delete a specfic item. How can you specify the DELETE HTTP method?
+5. Hit the `DELETE /api/:id` route with a CURL command to delete a specific item. How can you specify the DELETE HTTP method?
 
 ## Conclusion
 

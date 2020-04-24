@@ -141,3 +141,6 @@ There is another Play UI helper we can use to format the monetary value to displ
 
 Explore in the Play UI library [here](https://github.com/hmrc/play-ui/tree/master/src/main/twirl/uk/gov/hmrc/play/views/formatting) and try and find a suitable method to help format the value.
 Import the method and implement this in the same way as with the `Dates.formatDate()` method. You will have to specify the number of decimal places too.
+
+## Model, View, Controller
+
