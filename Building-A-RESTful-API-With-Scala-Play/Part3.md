@@ -166,11 +166,11 @@ Some key differences:
 
 1. Run the tests - this scenario should fail.
 
-2. Update the controller method to catch any `GenericDriverException` using a `recover` block.
+2. Update the controller method to catch any generic `ReactiveMongoException` using a `recover` block.
 
 ```
 dataRepository.create(dataModel).map(_ => Created) recover {
-  case _: GenericDriverException => InternalServerError(Json.obj(
+  case _: ReactiveMongoException => InternalServerError(Json.obj(
     "message" -> "Error adding item to Mongo"
   ))
 }
