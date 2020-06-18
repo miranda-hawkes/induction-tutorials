@@ -1,43 +1,49 @@
 # Part Two - A Basic Gov UK Style Page
 
-Here we'll create a basic Gov Uk style page with support for multiple languages.
+Here we'll create a basic [Gov UK Design System](https://design-system.service.gov.uk/) style page with support for multiple languages.
 
 ## Create A New Controller
 
-Delete the following files:
+Delete the following files (so we can start fresh):
 * `app/views/index.scala.html`
 * `app/views/main.scala.html`
 * `test/controllers/HomeControllerSpec`
 
-1. Change the `HomeController` so it extends `FrontendController` instead of `BaseController`. This will give us access to a number of functions for our actions
+1. Change the `HomeController` so it extends `FrontendController` instead of `BaseController`. This will give us access to a number of functions for our actions.
 
-    * You'll notice there is now an error stating that MessagesControllerComponents must be implemented - this is a dependency of the FrontendController trait. This class contains values necessary in most frontend controllers, such as multi-language support. To remedy this, change the class signature to the following:
-    ```
-    @Singleton
-    class HomeController @Inject()(mcc: MessagesControllerComponents) extends FrontendController(mcc) {
-    ```
-    * We won't go much into dependency injection (DI) as part of this, but using DI you inject the objects needed by a class typically through a constructor
+    * You'll notice there is now an error stating that MessagesControllerComponents must be implemented - this is a dependency of the FrontendController trait.
+    * This class contains values necessary in most frontend controllers, such as multi-language support. To remedy this, change the class signature to the following:
+   
+      ```
+      @Singleton
+      class HomeController @Inject()(mcc: MessagesControllerComponents) extends FrontendController(mcc) {
+      ```
+   
+    * We won't go much into dependency injection (DI) as part of this, but using DI you inject **objects needed by a class**, typically through a constructor
     * Import `uk.gov.hmrc.play.bootstrap.controller.FrontendController` when prompted
 
 2. Write a Scala method in the controller called index() that simply returns TODO
-    ```
+    
+   ```
     def index: Action[AnyContent] = TODO
     ```
-    * TODO is a Play feature that is essentially a default page for controller actions that haven't been completed. It is a useful way of keeping your app functioning while building functionality incrementally.
-
-3. Before we can see the TODO page, we need to add an app route that references the new controller and method. In the routes file, update the existing route to the following:
+    * `TODO` is a Play feature that supplies default code for controller actions that haven't been completed. It is a useful way of keeping your app functioning while building features incrementally.
+    * `TODO` just returns a HTML page with 'Not implemented' text on
+    
+3. Before we can see the TODO page in our browser, we need to add an app route that references the new controller and method. In the routes file, update the existing route to the following:
+   
     ```
-    GET     /index     controllers.HomeController.index
+    GET     /     controllers.HomeController.index
     ```
 
-4. Run your application and hit the new route. You should see the TODO text.
+4. Run your application and hit the new route at [localhost:9000](https://localhost:9000). You should see the TODO text.
 
-### Add a Gov Uk Template
+### Add a Gov UK Template
 
 1. Create a new file in the `views` package
     * Right click 'views'
     * New -> HTML File
-    * Call it GovUkTemplate.scala
+    * Call it `GovUkTemplate.scala`
     
 2. The new file created should have the extension `GovUkWrapper.scala.html`. These types of files are Play's [Twirl templates](https://www.playframework.com/documentation/2.6.x/ScalaTemplates) and allow you to use HTML and Scala code together to create dynamic web pages.
 
@@ -87,13 +93,13 @@ Delete the following files:
     ```
 
 There is a lot going on here, but it is basically dealing with some mandatory UI elements needed by the HMRC Gov UK Template.
-Don't worry too much about this as we don't need to change it and it is created by default for every new frontend service.
+Don't worry too much about this as we don't need to change it and it is created by default for every new frontend service on MDTP.
 
 ### Create a new view
 
 Now we should create a view that uses the GovUkWrapper and displays a simple heading.
 
-Create a new Twirl file called `Index` and add the following content:
+Create a new Twirl file (using the same steps as when you created `GovUkWrapper.scala.html`) called `Index` and add the following content:
 
 ```
 @import views.html.GovUkWrapper
@@ -108,7 +114,7 @@ Create a new Twirl file called `Index` and add the following content:
 ```
 * We have a dependency on the `GovUkWrapper` component, so we are injecting that as a dependency with `@this()`. Note - this is used for services on Play version 2.6 onwards.
 * The next line is declaring the parameters required for the view. The only one needed is an implicit `Messages` object. More on this later.
-* We then call our template by doing `@template() { ... }`. The round brackets passes in what the title of the page should be, and the curly brackets passes any HTML you want to be displayed on the body of the page
+* We then call our template by doing `@template() { ... }`. The round brackets passes in what the title of the page should be, and the curly brackets passes any HTML (or Scala code) you want to be displayed on the body of the page
 
 One last thing is to update our controller to call the view:
 
@@ -123,41 +129,42 @@ class HomeController @Inject()(mcc: MessagesControllerComponents,
 }
 ```
 * We inject our new Index view into the controller
-* We update our `index()` action so it returns a HTTP 200 / OK response, with the `Index` view in the body
+* We update our `index()` action so that it returns a HTTP 200 / OK response, with the `Index` view in the body
 
-Run your service again and navigate to `localhost:9000/index`. It doesn't look too great just yet.
+Run your service again and navigate to `localhost:9000`. It doesn't look too great just yet but we're getting there.
 
-That's because we don't have a locally running instance of the Assets Frontend service, so the browser can't retrieve the CSS & Javascript assets it needs.
-The reason we need a service for this is so that every microservice doesn't need to store or maintain its own UI assets, instead we rely on one microservice to host them for us. 
+That's because we don't have a **locally running instance** of the Assets Frontend service, so the browser can't retrieve the CSS & Javascript assets it needs.
+The reason we use a separate service for this is so that every microservice on MDTP doesn't need to store or maintain its own UI assets, instead we rely on one microservice to host them for us. 
 
-Run the following command to start Assets Frontend via Service Manager: `sm --start ASSETS_FRONTEND -f`.
-
-Refresh the page and you should see a perfectly formatted Gov UK Style page with a welcome message!
+1. Run the following command to start Assets Frontend via Service Manager: `sm --start ASSETS_FRONTEND -f`.
+2. Refresh the page and you should see a perfectly formatted Gov UK Style page with a welcome message!
 
 ## Messages Files
 
-Play Framework has multi language support, allowing you to put all possible bits of text needed for every page, in multiple different languages in one place.
-At the moment, if we wanted to display a Welsh version of our page, we'd have to create a whole new identical view which isn't ideal.
+**What if a user of our service couldn't read English?** At the moment, if we wanted to display a Spanish version of our page for example, we'd have to create a whole new almost identical view, but with the word 'Hola' instead of 'Hello'.
+
+Play Framework has **multi language support**, allowing you to put all the text displayed across the whole service in one place. If you want to add support for another language, you add another messages file containing all the translations.
 
 This is where that `Messages` object comes in.
 
-If you open up `conf/messages`, add in the following:
-```
-index.title = This is the nav title
-index.pageHeading = This is the page heading
-```
+1. Open up `conf/messages` and add in the following:
+  ```
+  index.title = This is the nav title
+  index.pageHeading = This is the page heading
+  ```
 
-Then in `Index.scala.html`, update where you call the template:
-```
-@template(title = messages("index.title")) {
-    <h1>@messages("index.pageHeading")<h1>
-}
-```
+2. In `Index.scala.html`, update the **two** places where the word 'Hello' was written:
+  ```
+  @template(title = messages("index.title")) {
+      <h1>@messages("index.pageHeading")<h1>
+  }
+  ```
 
 Now refresh the page in your browser. The text has changed to what you specified in the messages file!
 
-Obviously we're only catering for English still, but if you created a duplicate messages file called `messages.cy` and replaced the text with the Welsh equivalent, and a user hit the page with a certain browser cookie (`PLAY_LANG`) set to Welsh (`cy`), it would render the page in Welsh.
-On most MDTP services we implement an English/Welsh toggle button on pages so users can easily change their preference. 
-For this reason, we always use messages files for text on views - don't write the English version directly into views.
+Obviously we're only catering for English still, but if you created a duplicate messages file called `messages.es` (ES = Español) and replaced the text with the Spanish equivalent, and a user hit the page with a certain browser cookie (`PLAY_LANG`) set to Spanish (`es`), it would render the page in Spanish.
+
+* On most MDTP services we implement an English and Welsh toggle button on pages so users can easily change their preference
+* For this reason, **we always use messages files for text on views** - don't write the English version directly into views!
 
 ## [Part 3](Part3.md) 

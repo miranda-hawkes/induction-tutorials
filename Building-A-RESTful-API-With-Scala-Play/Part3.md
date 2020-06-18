@@ -191,7 +191,7 @@ You can use [CURL](https://curl.haxx.se/) to make HTTP requests for each of the 
 2. In the command line, run the following command:
 
 ```
-curl "localhost:9000/api/index" -i
+curl "localhost:9000/api" -i
 ```
 
 You should see something like the following:
@@ -271,7 +271,7 @@ There are a few ways you can view your newly created data in Mongo. One way is t
 
 1. Add another document to the database with a **different** `_id`
 
-2. Run the CURL command from earlier to test the `GET /api/index` route to check it returns your data items
+2. Run the CURL command from earlier to test the `GET /api` route to check it returns your data items
 
 3. Try hitting the `GET /api/:id` route to retrieve **only** the second document you added
 

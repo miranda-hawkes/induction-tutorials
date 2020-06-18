@@ -21,7 +21,7 @@ In this section we'll give our API the ability to create, read, update and delet
 
 4. Before we can see the TODO page, we need to add an app route that references the new controller and method. In the routes file, add the following:
     ```
-    GET     /api/index     controllers.ApplicationController.index
+    GET     /api/     controllers.ApplicationController.index
     ```
     
 5. Run your application and hit the new route. You should see the TODO text.
