@@ -130,12 +130,12 @@ In your project:
 To add a new library dependency to your project, open up plugins.sbt
 
 1. Add the following resolver to the file. This tells sbt where to find any public HMRC libraries:
-    ```
+    ```scala
     resolvers += "HMRC Releases" at "https://dl.bintray.com/hmrc/releases"
     ```
 
 2. Add the new library and version to the `build.sbt` file, similar to how scalatestplus-play is added:
-    ```
+    ```scala
     libraryDependencies += "uk.gov.hmrc" %% "govuk-template" % "5.52.0-play-26"
     libraryDependencies += "uk.gov.hmrc" %% "bootstrap-play-26" % "1.6.0"
     libraryDependencies += "uk.gov.hmrc" %% "play-ui" % "8.8.0-play-26"
@@ -143,7 +143,7 @@ To add a new library dependency to your project, open up plugins.sbt
     ```
 
 3. Update the `lazy val root` in `build.sbt`:
-    ```
+    ```scala
     lazy val root = (project in file("."))
       .enablePlugins(PlayScala)
       .settings(resolvers ++= Seq(

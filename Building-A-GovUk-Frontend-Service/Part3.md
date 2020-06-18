@@ -3,7 +3,7 @@
 Lets add some more components to our page to make it more interesting.
 
 Add the following to your Index view code:
-``` 
+```html
 <div class="grid-row">
     <div class="column-one-third form-hint">
         @messages("index.date")
@@ -34,7 +34,7 @@ Add the following to your Index view code:
 ```
 This simply creates what looks like a table with three headings and one item underneath. 
 
-1. Add entries to the messages file using the keys specified above so the headings read as the following:
+1. Add entries to the messages file using the keys specified above (e.g. `index.date`) so the headings read as the following:
     ```
     Date     Reference      Amount
     ```
@@ -53,14 +53,14 @@ We can use what are known as 'models' in the Scala world to hold data that can b
 Models are similar to classes and create data structures based off the parameters you pass in. These parameters are immutable (can't be changed).
 
 A simple model:
-```
+```scala
 case class Book(name: String
                 author: String,
                 numSales: Int)
 ```
 To create a new instance of that model, you can do either of the following:
 
-   ```
+   ```scala
    val bookOne = Book("Book name", "Author name", 10)
    val bookTwo = Book(name = "Book name", author = "Author name", numSales = 10)
    ```
@@ -79,7 +79,7 @@ To create a new instance of that model, you can do either of the following:
 
 4. Back to your view, change the parameters to the following:
 
-    ```
+    ```scala
     @(payments: List[Payment])(implicit messages: Messages)
     ```
 
@@ -89,7 +89,7 @@ To create a new instance of that model, you can do either of the following:
 We can create a list of dummy (fake) Payments for demonstration purposes.
 
 6. Update the controller action:
-    ```
+    ```scala
     def index: Action[AnyContent] = Action { implicit request =>
       Ok(indexView(List(
         Payment(LocalDate.parse("01-01-2020"), "abcd1234", 20.00),
@@ -101,7 +101,7 @@ We can create a list of dummy (fake) Payments for demonstration purposes.
     * e.g. `LocalDate.parse("01-01-2020")` creates a date data type the equivalent of 1st Jan 2020
 
 7. Go back to your Index view and replace the hardcoded rows with the following:
-    ```
+    ```html
     @payments.map { payment =>
         <div class="grid-row">
             <div class="column-one-third">
@@ -132,16 +132,16 @@ The way that the dates and money values are displayed isn't ideal. A date like `
 We can use a Play UI helper to format the date.
 
 1. In your view, import:
-    ```
+    ```scala
     @import uk.gov.hmrc.play.views.formatting.Dates
     ```
 
 2. Then change the line you output the date from:
-    ```
+    ```scala
     @payment.date
     ```
     to
-    ```
+    ```scala
     @Dates.formatDate(payment.date)
     ```
 

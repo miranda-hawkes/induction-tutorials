@@ -105,9 +105,9 @@ GitHub supports making direct changes to your repo within the web UI itself. Thi
 ## Checkout A New Branch
 To create and checkout a new branch:
 
-```
-git checkout -b <branch-name>
-```
+   ```
+   git checkout -b <branch-name>
+   ```
 Keep the branch name short and sweet. If your branch on a real microservice relates to a JIRA ticket, use the ID of the ticket as the branch name.
 
 ## Installing Dependencies
@@ -131,32 +131,32 @@ In your project:
 To add a new library dependency to your project, open up plugins.sbt
 
 1. Add the following resolver to the file. This tells sbt where to find any public HMRC libraries:
-```
-resolvers += "HMRC Releases" at "https://dl.bintray.com/hmrc/releases"
-```
+    ```scala
+    resolvers += "HMRC Releases" at "https://dl.bintray.com/hmrc/releases"
+    ```
 
 2. Add the new library and version to the `build.sbt` file, similar to how scalatestplus-play is added:
-```
-libraryDependencies += "uk.gov.hmrc" %% "simple-reactivemongo" % "7.26.0-play-26"
-libraryDependencies += "uk.gov.hmrc" %% "hmrctest" % "3.9.0-play-26" % Test
-```
+    ```scala
+    libraryDependencies += "uk.gov.hmrc" %% "simple-reactivemongo" % "7.26.0-play-26"
+    libraryDependencies += "uk.gov.hmrc" %% "hmrctest" % "3.9.0-play-26" % Test
+    ```
 
 3. Update the `lazy val root` in `build.sbt`:
-```
-lazy val root = (project in file("."))
-  .enablePlugins(PlayScala)
-  .settings(resolvers ++= Seq(
-    Resolver.bintrayRepo("hmrc", "releases"),
-    Resolver.jcenterRepo
-  ))
-```
+    ```scala
+    lazy val root = (project in file("."))
+      .enablePlugins(PlayScala)
+      .settings(resolvers ++= Seq(
+        Resolver.bintrayRepo("hmrc", "releases"),
+        Resolver.jcenterRepo
+      ))
+    ```
 
 4. Some extra configuration is needed for the reactive mongo library to know how to connect to your local Mongo database and to give it a name. Add the following to application.conf and adding in the name of your app:
-```
-mongodb {
-  uri = "mongodb://localhost:27017/replace-with-your-app-name-here"
-}
-```
+    ```
+    mongodb {
+      uri = "mongodb://localhost:27017/replace-with-your-app-name-here"
+    }
+    ```
 5. Run tests again and check everything is working okay
 
 6. Add the changed files to git, do a git commit briefly detailing what you have changed, then push the branch up to GitHub (hint: `git push origin <branch-name>`)

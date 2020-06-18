@@ -14,7 +14,7 @@ Here we'll create a basic [Gov UK Design System](https://design-system.service.g
     * You'll notice there is now an error stating that MessagesControllerComponents must be implemented - this is a dependency of the FrontendController trait.
     * This class contains values necessary in most frontend controllers, such as multi-language support. To remedy this, change the class signature to the following:
    
-      ```
+      ```scala
       @Singleton
       class HomeController @Inject()(mcc: MessagesControllerComponents) extends FrontendController(mcc) {
       ```
@@ -24,7 +24,7 @@ Here we'll create a basic [Gov UK Design System](https://design-system.service.g
 
 4. Write a Scala method in the controller called index() that simply returns TODO
     
-    ```
+    ```scala
     def index: Action[AnyContent] = TODO
     ```
     * `TODO` is a Play feature that supplies default code for controller actions that haven't been completed. It is a useful way of keeping your app functioning while building features incrementally.
@@ -49,7 +49,7 @@ Here we'll create a basic [Gov UK Design System](https://design-system.service.g
 
 3. Add the following to the file:
 
-    ```
+    ```scala
     @import views.html.layouts.GovUkTemplate
     @import uk.gov.hmrc.play.views.html.layouts._
     @import play.twirl.api.HtmlFormat
@@ -101,7 +101,7 @@ Now we should create a view that uses the GovUkWrapper and displays a simple hea
 
 1. Create a new Twirl file (using the same steps as when you created `GovUkWrapper.scala.html`) called `Index` and add the following content:
 
-    ```
+    ```scala
     @import views.html.GovUkWrapper
     
     @this(template: GovUkWrapper)
@@ -118,7 +118,7 @@ Now we should create a view that uses the GovUkWrapper and displays a simple hea
 
 2. One last thing is to update our controller to call the view:
 
-    ```
+    ```scala
     class HomeController @Inject()(mcc: MessagesControllerComponents,
                                    indexView: Index) extends FrontendController(mcc) {
     
@@ -154,7 +154,7 @@ This is where that `Messages` object comes in.
    ```
 
 2. In `Index.scala.html`, update the **two** places where the word 'Hello' was written:
-  ```
+  ```scala
   @template(title = messages("index.title")) {
       <h1>@messages("index.pageHeading")<h1>
   }

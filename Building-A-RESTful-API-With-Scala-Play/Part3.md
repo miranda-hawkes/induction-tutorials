@@ -7,7 +7,7 @@ This section aims to introduce you to the flexibility of the Mockito mocking fra
 Go back to your `ApplicationControllerSpec`. There should be an error, as our controller now has two extra injected dependencies it didn't have before.
 
 We need to add another library dependency to help with unit testing our controller. Add the following library dependency with the rest:
-```
+```scala
 "org.mockito" % "mockito-core" % "2.28.2" % Test
 ```
 
@@ -15,7 +15,7 @@ In `ApplicationControllerSpec`, extend it with `MockitoSugar`. See if you can fi
 
 Then, add the following below the creation of `controllerComponents`:
 
-```
+```scala
 implicit val executionContext: ExecutionContext = app.injector.instanceOf[ExecutionContext]
 val mockDataRepository: DataRepository = mock[DataRepository]
 ```
@@ -36,14 +36,14 @@ Try running the tests. You should get a `java.lang.NullPointerException`.
 This is because, although we've now created a `mock[DataRepository]`, we haven't told it what to do yet.
 
 Add these imports:
-```
+```scala
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
 ```
 
 Add the following to your test, just **above** where you create the `val result = ...`.
 
-```
+```scala
 val dataModel: DataModel = DataModel(
     "abcd",
     "test name",
@@ -75,7 +75,7 @@ Now run the tests again and they should pass.
 To test this function, we need to supply a body in the request, detailing what we want to add to Mongo.
 Update your .create test:
 
-```
+```scala
   "ApplicationController .create" when {
     
     "the json body is valid" should {
@@ -114,13 +114,13 @@ Update your .create test:
 
 3. Create two test scenarios for the `.update()` function:
     1. The supplied JSON is valid - we also want to check the body of the response contains the JSON you passed in. You can use:
-     ``` 
+     ```scala
      "return the correct JSON" in {
          await(jsonBodyOf(result)) shouldBe jsonBody
      }
      ```
      You will need the following created at the top of the test spec to use the `jsonBodyOf` function:
-     ```
+     ```scala
      implicit val system: ActorSystem = ActorSystem("Sys")
      implicit val materializer: ActorMaterializer = ActorMaterializer()
      ``` 
@@ -136,7 +136,7 @@ One thing we haven't catered for is if the Mongo query fails. This could be due 
 
 Add a scenario to the `ApplicationController .create` test:
 
-``` 
+```scala
 "the mongo data creation failed" should {
 
   val jsonBody: JsObject = Json.obj(
@@ -168,7 +168,7 @@ Some key differences:
 
 2. Update the controller method to catch any generic `ReactiveMongoException` using a `recover` block.
 
-```
+```scala
 dataRepository.create(dataModel).map(_ => Created) recover {
   case _: ReactiveMongoException => InternalServerError(Json.obj(
     "message" -> "Error adding item to Mongo"
