@@ -122,7 +122,9 @@ We can create a list of dummy (fake) Payments for demonstration purposes.
    *  `.map { ... }` **loops** over the list of payments one by one
    * for each payment in the list, it creates a series of `div`s and outputs the date, reference and amount fields from the model.
 
-8. Refresh the page in the browser and you should see the two payments displayed.
+8. Refresh the page in the browser and you should see the two payments displayed. It should look like this:
+
+<img src="assets/part3_1.png" width="700">
 
 ## Formatting data
 
@@ -154,6 +156,10 @@ There is another Play UI helper we can use to format the monetary value to displ
 1. Explore in the Play UI library [here](https://github.com/hmrc/play-ui/tree/master/src/main/twirl/uk/gov/hmrc/play/views/formatting) and try and find a suitable method to help format the date
 2. Import the object (in a similar way to the Money helper)
 3. Use the helper method you found in the same way as with the `Dates.formatDate()` method. You will have to specify the number of decimal places (i.e. 2) as a parameter too.
+
+Your page should look something like this: 
+
+<img src="assets/part3_2.png" width="700">
 
 ## Model, View, Controller
 
