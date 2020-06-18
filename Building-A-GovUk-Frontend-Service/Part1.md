@@ -130,55 +130,55 @@ In your project:
 To add a new library dependency to your project, open up plugins.sbt
 
 1. Add the following resolver to the file. This tells sbt where to find any public HMRC libraries:
-```
-resolvers += "HMRC Releases" at "https://dl.bintray.com/hmrc/releases"
-```
+    ```
+    resolvers += "HMRC Releases" at "https://dl.bintray.com/hmrc/releases"
+    ```
 
 2. Add the new library and version to the `build.sbt` file, similar to how scalatestplus-play is added:
-```
-libraryDependencies += "uk.gov.hmrc" %% "govuk-template" % "5.52.0-play-26"
-libraryDependencies += "uk.gov.hmrc" %% "bootstrap-play-26" % "1.6.0"
-libraryDependencies += "uk.gov.hmrc" %% "play-ui" % "8.8.0-play-26"
-libraryDependencies += "uk.gov.hmrc" %% "hmrctest" % "3.9.0-play-26" % Test
-```
+    ```
+    libraryDependencies += "uk.gov.hmrc" %% "govuk-template" % "5.52.0-play-26"
+    libraryDependencies += "uk.gov.hmrc" %% "bootstrap-play-26" % "1.6.0"
+    libraryDependencies += "uk.gov.hmrc" %% "play-ui" % "8.8.0-play-26"
+    libraryDependencies += "uk.gov.hmrc" %% "hmrctest" % "3.9.0-play-26" % Test
+    ```
 
 3. Update the `lazy val root` in `build.sbt`:
-```
-lazy val root = (project in file("."))
-  .enablePlugins(PlayScala)
-  .settings(resolvers ++= Seq(
-    Resolver.bintrayRepo("hmrc", "releases"),
-    Resolver.jcenterRepo
-  ))
-```
+    ```
+    lazy val root = (project in file("."))
+      .enablePlugins(PlayScala)
+      .settings(resolvers ++= Seq(
+        Resolver.bintrayRepo("hmrc", "releases"),
+        Resolver.jcenterRepo
+      ))
+    ```
 
 4. Add a route to the `routes` file - this is needed to pick up Gov Uk templates:
-```
-->     	/template                                template.Routes
-```
+    ```
+    ->     	/template                                template.Routes
+    ```
 
 5. Add the following to your `application.conf` file. This is needed to use the bootstrap library and other UI assets:
-```
-appName = "play-scala-seed-frontend"
+    ```
+    appName = "play-scala-seed-frontend"
+    
+    include "frontend.conf"
+    
+    play.filters.headers.contentSecurityPolicy= "default-src 'self' 'unsafe-inline' localhost:9000 localhost:9032 data:"
+    
+    play.modules.enabled += "uk.gov.hmrc.play.bootstrap.FrontendModule"
+    play.modules.enabled += "uk.gov.hmrc.play.bootstrap.HttpClientModule"
+    play.modules.enabled += "uk.gov.hmrc.play.bootstrap.AuditModule"
+    
+    assets {
+      version = "4.11.0"
+      version = ${?ASSETS_FRONTEND_VERSION}
+      url = "http://localhost:9032/assets/"
+    }
+    ```
+6. Run tests again and check everything is working okay
 
-include "frontend.conf"
+7. Add the changed files to git, do a git commit briefly detailing what you have changed, then push the branch up to GitHub (hint: `git push origin <branch-name>`)
 
-play.filters.headers.contentSecurityPolicy= "default-src 'self' 'unsafe-inline' localhost:9000 localhost:9032 data:"
-
-play.modules.enabled += "uk.gov.hmrc.play.bootstrap.FrontendModule"
-play.modules.enabled += "uk.gov.hmrc.play.bootstrap.HttpClientModule"
-play.modules.enabled += "uk.gov.hmrc.play.bootstrap.AuditModule"
-
-assets {
-  version = "4.11.0"
-  version = ${?ASSETS_FRONTEND_VERSION}
-  url = "http://localhost:9032/assets/"
-}
-```
-4. Run tests again and check everything is working okay
-
-5. Add the changed files to git, do a git commit briefly detailing what you have changed, then push the branch up to GitHub (hint: `git push origin <branch-name>`)
-
-6. Navigate to GitHub and find your new branch and view the changes you have made
+8. Navigate to GitHub and find your new branch and view the changes you have made
 
 ## [Part 2](Part2.md) 
