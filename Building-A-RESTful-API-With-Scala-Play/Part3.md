@@ -288,3 +288,7 @@ Excellent, you've now created a RESTful API with CRUD functions, unit tested it 
 2. Create a new Pull Request on GitHub, and get a colleague to review your work. Once they're happy, feel free to merge it into your master branch
     
     **Important** - only merge your own pull requests if its your own repo, like this one. For everything else, a member of your team should review and merge the branch into master.
+    
+## Help
+* Demo project [here](https://mh-play-scala-api.herokuapp.com/) you can test/compare yours against
+* Source code [here](https://github.com/miranda-hawkes/play-scala-seed)    

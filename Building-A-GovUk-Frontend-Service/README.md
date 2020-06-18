@@ -38,4 +38,4 @@ In other ways, it differs from those frameworks: it’s 100% stateless and is bu
 ## Sections
 * [Part 1](Part1.md) 
 * [Part 2](Part2.md) 
-* [Part 3](Part3.md) 
+* [Part 3](Part3.md)

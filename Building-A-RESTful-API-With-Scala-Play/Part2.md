@@ -290,3 +290,7 @@ See if you can apply what you've seen so far to the `update()` function and comp
 * If successful, it should return HTTP ACCEPTED, with the **new** updated DataModel (in the form of JSON) in the body of the response
 
 ## [Part 3](Part3.md)
+
+## Help
+* Demo project [here](https://mh-play-scala-api.herokuapp.com/) you can test/compare yours against
+* Source code [here](https://github.com/miranda-hawkes/play-scala-seed)

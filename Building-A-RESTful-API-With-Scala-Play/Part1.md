@@ -164,3 +164,7 @@ mongodb {
 7. Navigate to GitHub and find your new branch and view the changes you have made
 
 ## [Part 2](Part2.md) 
+
+## Help
+* Demo project [here](https://mh-play-scala-api.herokuapp.com/) you can test/compare yours against
+* Source code [here](https://github.com/miranda-hawkes/play-scala-seed)

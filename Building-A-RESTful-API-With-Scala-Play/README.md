@@ -52,3 +52,7 @@ To wrap it all up, we’ll be using Scala Test and Mockito to unit test our appl
 * [Part 1](Part1.md) 
 * [Part 2](Part2.md) 
 * [Part 3](Part3.md) 
+
+## Help
+* Demo project [here](https://mh-play-scala-api.herokuapp.com/) you can test/compare yours against
+* Source code [here](https://github.com/miranda-hawkes/play-scala-seed)
