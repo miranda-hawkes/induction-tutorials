@@ -43,7 +43,7 @@ Here we'll create a basic [Gov UK Design System](https://design-system.service.g
 1. Create a new file in the `views` package
     * Right click 'views'
     * New -> HTML File
-    * Call it `GovUkTemplate.scala`
+    * Call it `GovUkWrapper.scala`
     
 2. The new file created should have the extension `GovUkWrapper.scala.html`. These types of files are Play's [Twirl templates](https://www.playframework.com/documentation/2.6.x/ScalaTemplates) and allow you to use HTML and Scala code together to create dynamic web pages.
 
